@@ -304,6 +304,19 @@ There is no contradiction with uniqueness in Z₂. The infinite address determin
 
 This also reframes the practical value of K. It is an exact *address/certificate stream* for a 2-adic state, not a standalone compression format for an ordinary integer. With a bound or a supplied terminal certificate, it becomes an effective decoder; without one, it is an exact representation with a noncomputable-in-general range-membership question. This is the strongest useful adjacent result found in the broker pass.
 
+## 6B. Minimal finite certificate codec and adversarial break attempt
+
+The smallest useful extra datum is one nonnegative integer quotient. For a prefix `runs=(k_0,...,k_{J-1})`, let (S=sum k_i), let (M=2^{S+1}), and let (r) be the unique odd residue modulo (M) obtained by reversing the affine steps with terminal value 1:
+
+    y := 1
+    y := 3^(-1) (2^k y − 1) mod M,    for k in reversed(runs).
+
+Then every exact-prefix state is (n=r+Mt), with (tge0). Thus the codec stores only `{runs, quotient:t}`. Decoding computes (n) and independently executes each accelerated step, requiring the observed valuation to equal the corresponding run. This is equivalent to storing the terminal odd state (n_J), but the quotient is canonical for the cylinder and avoids rational arithmetic. No finite prefix can select an integer with fewer than one unbounded parameter: the cylinder contains infinitely many positive integers. If an explicit bound (n<B) is supplied, the quotient range is finite and the information lower bound becomes (lceillog_2 N_Bceil) bits, where (N_B) is the number of candidates in that cylinder below (B).
+
+Implementation: `collatz/certificate_codec.py`, with `encode_prefix(n, steps)` and `decode_certificate(certificate)`. The latter returns the exact decoded integer and verifies all claimed runs. Tests are in `tests/test_certificate_codec.py`.
+
+The adversarial result is as important as the codec itself. Changing the quotient or changing a run still yields a valid certificate for a *different* integer, because every positive run word plus every nonnegative quotient defines a legitimate positive odd state by the same residue construction. The verifier therefore has soundness (“this pair describes the claimed trajectory prefix”) but no authenticity (“this pair came from the original n”). A commitment, signature, or externally supplied expected digest is required for authenticity and is not part of the minimal mathematical certificate. Negative quotients, zero runs, wrong types, and non-exact claims are rejected. Seven unit tests, including these mutation cases, pass.
+
 ## 7. Five speculative applications or monetization ideas
 
 These are speculation, not mathematical results or validated market opportunities.
