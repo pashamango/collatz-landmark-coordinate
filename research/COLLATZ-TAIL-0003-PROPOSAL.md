@@ -290,6 +290,20 @@ Searches included “Bernstein Lagarias 3x+1 conjugacy map”, “Collatz parity
 
 **Strongest bounded CANDIDATE-NOVEL engineering question:** under a specified streaming model, bit-cost measure, output format, and target hardware, does a base-4 exact-shell/successor implementation improve total states, delay, or energy over an optimized binary implementation after alphabet and alignment costs? Require a complete machine, correctness proof, minimized baseline, and reproducible measurements. This report establishes no such advantage.
 
+## 6A. Opportunity / extra-mile broker result: what can be decoded from K?
+
+This is the adjacent question suggested by the phrase “need not reconstruct positive integer.” It has a sharper answer than the original report's domain warning.
+
+**Theorem C [KNOWN / REFORMULATION].** Let F map an infinite positive run word K to the 2-adic value in Theorem B. A finite prefix of K never certifies that F(K) is an ordinary positive integer. In fact, every prefix cylinder contains infinitely many positive odd integers and infinitely many nonintegral 2-adic values.
+
+**Proof.** A prefix of total length S fixes the input to one odd residue class modulo 2^(S+1), by (C). Every positive representative of that class has the same exact prefix, and there are infinitely many such representatives. For nonintegral realizations, the same cylinder contains continuum-many tail words, hence continuum-many 2-adic values by injectivity of F, whereas ordinary integers are countable. Thus no finite observed K prefix decides integer membership. ∎
+
+The result is stronger than “the reconstruction may be negative.” It says that an exact decoder needs an additional promise, such as an a priori bound 0<n<B, a finite binary description of n, or a terminal certificate. Under a known bound B, one can compute enough K bits to recover the unique residue in [1,B] (at most ceil(log₂B)+1 bits beyond the relevant prefix) and verify the finite run prefix directly. Without such a bound, the natural procedure “keep extending the prefix until the residue stabilizes as a small integer” is only a semidecision procedure: a later bit may still change the residue.
+
+There is no contradiction with uniqueness in Z₂. The infinite address determines exactly one 2-adic point; the obstruction is deciding whether that point belongs to the countable subset N⊂Z₂ from an unbounded stream. In a general computable-input model this membership problem has no uniform finite-time algorithm: a binary stream can encode an arbitrary undecidable set, while “is eventually all zero” (the ordinary-integer condition in the state’s binary expansion) is not decidable from finite observations. A precise complexity theorem requires fixing the representation of infinite K and the allowed oracle model; the unconditional statement established here is the finite-prefix impossibility and the bounded-promise algorithm.
+
+This also reframes the practical value of K. It is an exact *address/certificate stream* for a 2-adic state, not a standalone compression format for an ordinary integer. With a bound or a supplied terminal certificate, it becomes an effective decoder; without one, it is an exact representation with a noncomputable-in-general range-membership question. This is the strongest useful adjacent result found in the broker pass.
+
 ## 7. Five speculative applications or monetization ideas
 
 These are speculation, not mathematical results or validated market opportunities.
@@ -299,6 +313,7 @@ These are speculation, not mathematical results or validated market opportunitie
 - A classroom parity/run-length/base-4 visualizer sold as a teaching module or workshop.
 - A benchmark package comparing verified binary and radix-4 streaming implementations for education and hardware experiments.
 - A reproducibility service that turns experimental number-theory claims into proof obligations, counterexample suites, and auditable reports.
+- A bounded-address decoder API that accepts K together with an explicit integer bound and returns a verifiable ordinary-integer candidate (speculative product idea, not a mathematical result).
 
 ## 8. Delivery and boundaries
 
